@@ -4,7 +4,7 @@
  */
 ;(function($){
 
-// 兼容oe7、8
+// 兼容ie7、8
 if(!Object.create){
 	Object.create = function(o){
 		function F(){};
