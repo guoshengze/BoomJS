@@ -43,6 +43,11 @@ var Boom = {
 				this.wrapDom = o.wrapDom;
 				this.imgSrc = o.imgDom.attr('src');
 
+				this.rowCols = o.rowCols || [10,10];
+				this.boomXY = o.boomXY || [0,0];
+				this.boomWidth = o.boomWidth || 50;
+				this.boomTime = o.boomTime || 100;
+
 				this.width = $img.css('width').split('px')[0];
 				this.height = $img.css('height').split('px')[0];
 
@@ -56,6 +61,18 @@ var Boom = {
 				this.bindEvent();
 			}
 		},
+		change:function(name,val){
+			if(name && this[name]){
+				this[name] = val;
+				// 更新数据
+				this.wrapDom.find('div').remove();
+				this.getPosition();
+				this.domForPiece();
+				this.bindEvent();
+			}
+
+			return this;
+		},
 		getOriData:function(){
 			var that = this;
 			$("<img/>").attr("src", that.imgSrc).load(function() {
@@ -66,6 +83,9 @@ var Boom = {
 		getPosition:function(){
 			var x = 0,
 				y = 0;
+
+			this.position = [];
+			this.boomPosition = [];
 
 			this.minWidth = Math.round(this.width / this.rowCols[0]);
 			this.minHeight = Math.round(this.height / this.rowCols[1]);
@@ -95,6 +115,9 @@ var Boom = {
 				 	param = parseFloat(arr[i].y/arr[i].x).toFixed(3);
 				 	x = arr[i].x + ( arr[i].x > 0 ? that.boomWidth : - that.boomWidth );
 				 	y = param * x;
+				 	// 修正浮点数
+				 	x = parseFloat(x);
+
 				 	new_arr.push({
 				 		x: ( x + that.width / 2 + parseInt(Math.random()* 200) ).toFixed(2),//纠正偏移坐标 + 随机位置抖动
 				 		y: ( y + that.height / 2 + parseInt(Math.random()* 50) ).toFixed(2)
@@ -111,7 +134,7 @@ var Boom = {
 
 			for(var i = 0; i < this.position.length; i++){
 				str += '<div style="width:' + this.minWidth + 'px;height:' + this.minHeight + 'px;position:absolute;top:' + this.position[i].y + 'px;left:' + this.position[i].x + 'px;overflow:hidden;">'
-						+ '<img src="' + this.imgSrc + '" style="display:block;width:' + this.width + 'px;position:absolute;left:-' + this.position[i].x + 'px;top:-' + this.position[i].y + 'px;"/>'
+						+ '<img src="' + this.imgSrc + '" style="display:block;width:' + this.width + 'px;height:' + this.height + 'px;position:absolute;left:-' + this.position[i].x + 'px;top:-' + this.position[i].y + 'px;"/>'
 					+ '</div>';
 			}
 
@@ -142,7 +165,7 @@ var Boom = {
 
 			dom.each(function(i,v){
 				position = flag ? that.boomPosition[i] : that.position[i] ;
-				$(v).animate({left:position.x,top:position.y}, time ? time : this.boomTime);
+				$(v).animate({left:position.x,top:position.y}, time ? time : that.boomTime);
 			});
 
 			return this;

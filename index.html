@@ -40,11 +40,14 @@ var sample = Object.create(Boom);
 
 	sample.init({
 		imgDom:$('img'),//img 
-		wrapDom:$('.wrap') //img parent
+		wrapDom:$('.wrap'), //img parent
+		boomTime:5000,
+		boomWidth:50,
+		rowCols:[10,10]
 	});
 
-	// 可链式调用，爆炸和回复
-	sample.runBoo(true,2000).runBoo(false,300)
+	// 可链式调用，爆炸和恢复
+	sample.runBoo(true).runBoo(false,300)
 
 
 </script>
