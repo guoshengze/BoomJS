@@ -1,4 +1,4 @@
-# 让图片爆炸开来吧！ #
+# 让图片爆炸开来吧!！ #
  兼容ie7、8 
 
 	var sample = Object.create(Boom);
